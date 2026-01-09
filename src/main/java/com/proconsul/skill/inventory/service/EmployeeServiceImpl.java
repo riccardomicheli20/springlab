@@ -7,6 +7,7 @@ import com.proconsul.skill.inventory.mapper.EmployeePatchDtoMapper;
 import com.proconsul.skill.inventory.repository.EmployeeRepository;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
+import com.proconsul.skill.inventory.exception.EmployeeAlreadyExistException;
 
 @Service
 public class EmployeeServiceImpl implements EmployeeService{
@@ -18,6 +19,15 @@ public class EmployeeServiceImpl implements EmployeeService{
 		this.employeeRepository = employeeRepository;
 		this.employeePatchDtoMapper = employeePatchDtoMapper;
 	}
+
+    @Override
+    public Employee saveEmployee(Employee employee) {
+        if (employeeRepository.existsByFiscalCode(employee.getFiscalCode())) {
+            throw new EmployeeAlreadyExistException("Employee with fiscal code: " + employee.getFiscalCode() + " " + " already exist");
+        } else {
+            return employeeRepository.save(employee);
+        }
+    }
 	
 	@Value("${entity.not.found}")
 	private String entityNotFound;

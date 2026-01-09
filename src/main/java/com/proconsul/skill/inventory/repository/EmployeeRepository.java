@@ -9,4 +9,8 @@ public interface EmployeeRepository extends JpaRepository<Employee, String> {
 	
 	Optional<Employee> findByFiscalCode(String fiscalCode);
 	
+
+    public Boolean existsByFiscalCode (String fiscalCode);
+
+
 }
