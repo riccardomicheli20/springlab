@@ -10,20 +10,16 @@ import jakarta.validation.constraints.NotBlank;
 
 @Entity
 public class Technology {
-	
-	/*
-	 * PK Long AutoIncrement Id
-String name ( obbligatorio)
-Category category_id FK
-	 */	
+
 	@Id
 	@GeneratedValue(strategy= GenerationType.IDENTITY)
-private Long id;
+	private Long id;
+	
 	@NotBlank
 	@Column(nullable= false, unique= true, length=50)
 	private String name;
-	
-	@ManyToOne
+
+	@ManyToOne(optional=false)
 	private Category category;
 
 	public Category getCategory() {
@@ -49,16 +45,16 @@ private Long id;
 	public void setName(String name) {
 		this.name = name;
 	}
-	
+
 	protected Technology() {
-		
+
 	}
 
 	public Technology(@NotBlank String name, Category category) {
 		this.name = name;
 		this.category = category;
 	}
-	
-	
-	
+
+
+
 }
