@@ -1,4 +1,4 @@
-package com.proconsul.skill.inventory;
+package com.proconsul.skill.invertory;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
