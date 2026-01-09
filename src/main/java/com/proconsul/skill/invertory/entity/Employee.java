@@ -1,6 +1,5 @@
 package com.proconsul.skill.invertory.entity;
 
-
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
@@ -13,182 +12,158 @@ import java.util.List;
 @Entity
 public class Employee {
 
-/*
-    STRING fiscalCode  (obbligatorio, con relativo controllo di cf valido PK);
-    STRING firstName ( obbligatorio);
-    STRING lastName ( obbligatorio);
-    STRING email ( obbligatorio, con relativo controllo di email valida);
-    DATE birthDate ( con relativo controllo di data in formato valido, obbligatorio JAVA.SQL.DATE);
-    STRING birthPlace (obbligatorio);
-    STRING address ( obbligatorio);
-    STRING city ( obbligatorio);
-    STRING postalCode ( obbligatorio);
-    STRING phoneNumber ( obbligatorio);
-    List<Skill> Skills  ManyToMany (Skill)
-*/
+	@Pattern(regexp = "^[A-Z]{6}[0-9]{2}[A-Z][0-9]{2}[A-Z][0-9]{3}[A-Z]$", message = "Codice fiscale non valido")
+	@Size(min = 16, max = 16)
+	@Id
+	@Column(name = "fiscal_code", length = 16)
+	private String fiscalCode;
 
+	@NotBlank
+	@Column(name = "first_name", length = 60)
+	private String firstName;
 
-    @Pattern(
-            regexp = "^[A-Z]{6}[0-9]{2}[A-Z][0-9]{2}[A-Z][0-9]{3}[A-Z]$",
-            message = "Codice fiscale non valido"
-    )
-    @Size(min = 16, max = 16)
-    @Id
-    @Column(name = "fiscal_code", length = 16)
-    private String fiscalCode;
+	@NotBlank
+	@Column(name = "last_name", length = 60)
+	private String lastName;
 
+	@Column(length = 60)
+	@Email
+	@NotBlank
+	private String email;
 
-    @NotBlank
-    @Column(name = "first_name", length = 60)
-    private String firstName;
+	@NotBlank
+	@Column(name = "birth_date")
+	private Date birthDate;
 
+	@NotBlank
+	@Column(name = "birth_place", length = 58)
+	private String birthPlace;
 
-    @NotBlank
-    @Column(name = "last_name", length = 60)
-    private String lastName;
+	@Column(length = 60)
+	@NotBlank
+	private String address;
 
+	@Column(length = 60)
+	@NotBlank
+	private String city;
 
-    @Column(length = 60)
-    @Email
-    @NotBlank
-    private String email;
+	@Column(length = 60)
+	@NotBlank
+	private String postalCode;
 
-    @NotBlank
-    @Column(name = "birth_date")
-    private Date birthDate;
+	@Column(length = 60)
+	@NotBlank
+	private String phoneNumber;
 
+	@ManyToMany(fetch = FetchType.EAGER)
+	@JoinTable(name = "employee_skill", joinColumns = @JoinColumn(name = "employee_fiscal_code"), inverseJoinColumns = @JoinColumn(name = "skill_id"))
 
-    @NotBlank
-    @Column(name = "birth_place", length = 58)
-    private String birthPlace;
+	private List<Skill> skills;
 
-    @Column(length = 60)
-    @NotBlank
-    private String address;
+	public String getFiscalCode() {
+		return fiscalCode;
+	}
 
-    @Column(length = 60)
-    @NotBlank
-    private String city;
+	public String getFirstName() {
+		return firstName;
+	}
 
-    @Column(length = 60)
-    @NotBlank
-    private String postalCode;
+	public String getLastName() {
+		return lastName;
+	}
 
-    @Column(length = 60)
-    @NotBlank
-    private String phoneNumber;
+	public String getEmail() {
+		return email;
+	}
 
-    @ManyToMany(fetch = FetchType.EAGER)
-    @JoinTable(name = "employee_skill", joinColumns = @JoinColumn(name = "employee_fiscal_code"),
-            inverseJoinColumns = @JoinColumn(name = "skill_id"))
+	public Date getBirthDate() {
+		return birthDate;
+	}
 
-    private List<Skill> skills;
+	public String getBirthPlace() {
+		return birthPlace;
+	}
 
+	public String getAddress() {
+		return address;
+	}
 
-    public String getFiscalCode() {
-        return fiscalCode;
-    }
+	public String getCity() {
+		return city;
+	}
 
-    public String getFirstName() {
-        return firstName;
-    }
+	public String getPostalCode() {
+		return postalCode;
+	}
 
-    public String getLastName() {
-        return lastName;
-    }
+	public String getPhoneNumber() {
+		return phoneNumber;
+	}
 
-    public String getEmail() {
-        return email;
-    }
+	public List<Skill> getSkills() {
+		return skills;
+	}
 
-    public Date getBirthDate() {
-        return birthDate;
-    }
+	public void setFiscalCode(String fiscalCode) {
+		this.fiscalCode = fiscalCode;
+	}
 
-    public String getBirthPlace() {
-        return birthPlace;
-    }
+	public void setFirstName(String firstName) {
+		this.firstName = firstName;
+	}
 
-    public String getAddress() {
-        return address;
-    }
+	public void setEmail(String email) {
+		this.email = email;
+	}
 
-    public String getCity() {
-        return city;
-    }
+	public void setLastName(String lastName) {
+		this.lastName = lastName;
+	}
 
-    public String getPostalCode() {
-        return postalCode;
-    }
+	public void setBirthDate(Date birthDate) {
+		this.birthDate = birthDate;
+	}
 
-    public String getPhoneNumber() {
-        return phoneNumber;
-    }
+	public void setBirthPlace(String birthPlace) {
+		this.birthPlace = birthPlace;
+	}
 
-    public List<Skill> getSkills() {
-        return skills;
-    }
+	public void setAddress(String address) {
+		this.address = address;
+	}
 
-    public void setFiscalCode(String fiscalCode) {
-        this.fiscalCode = fiscalCode;
-    }
+	public void setCity(String city) {
+		this.city = city;
+	}
 
-    public void setFirstName(String firstName) {
-        this.firstName = firstName;
-    }
+	public void setPostalCode(String postalCode) {
+		this.postalCode = postalCode;
+	}
 
-    public void setEmail(String email) {
-        this.email = email;
-    }
+	public void setPhoneNumber(String phoneNumber) {
+		this.phoneNumber = phoneNumber;
+	}
 
-    public void setLastName(String lastName) {
-        this.lastName = lastName;
-    }
+	public void setSkills(List<Skill> skills) {
+		this.skills = skills;
+	}
 
-    public void setBirthDate(Date birthDate) {
-        this.birthDate = birthDate;
-    }
+	protected Employee() {
 
-    public void setBirthPlace(String birthPlace) {
-        this.birthPlace = birthPlace;
-    }
+	}
 
-    public void setAddress(String address) {
-        this.address = address;
-    }
-
-    public void setCity(String city) {
-        this.city = city;
-    }
-
-    public void setPostalCode(String postalCode) {
-        this.postalCode = postalCode;
-    }
-
-    public void setPhoneNumber(String phoneNumber) {
-        this.phoneNumber = phoneNumber;
-    }
-
-    public void setSkills(List<Skill> skills) {
-        this.skills = skills;
-    }
-
-  protected Employee(){
-
-
-  }
-
-    public Employee(String fiscalCode, String firstName, String lastName, String email, Date birthDate, String birthPlace, String address, String city, String postalCode, String phoneNumber, List<Skill> skills) {
-        this.fiscalCode = fiscalCode;
-        this.firstName = firstName;
-        this.lastName = lastName;
-        this.email = email;
-        this.birthDate = birthDate;
-        this.birthPlace = birthPlace;
-        this.address = address;
-        this.city = city;
-        this.postalCode = postalCode;
-        this.phoneNumber = phoneNumber;
-        this.skills = skills;
-    }
+	public Employee(String fiscalCode, String firstName, String lastName, String email, Date birthDate,
+			String birthPlace, String address, String city, String postalCode, String phoneNumber, List<Skill> skills) {
+		this.fiscalCode = fiscalCode;
+		this.firstName = firstName;
+		this.lastName = lastName;
+		this.email = email;
+		this.birthDate = birthDate;
+		this.birthPlace = birthPlace;
+		this.address = address;
+		this.city = city;
+		this.postalCode = postalCode;
+		this.phoneNumber = phoneNumber;
+		this.skills = skills;
+	}
 }
