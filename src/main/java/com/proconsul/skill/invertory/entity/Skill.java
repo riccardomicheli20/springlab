@@ -9,15 +9,7 @@ import java.util.List;
 
 @Entity
 public class Skill {
-    //    PK  Long, AutoIncrement Id
-//    Class technology    oneToOne
-//    Class category
-//
-//    ENUM seniority (none, junior, middle, senior ) nullable=true
-//
-//    ENUM level (none,low, medium, high)  nullable=true
-//
-//    List<Employee> Employees  ManyToMany (Employee)
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
