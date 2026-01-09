@@ -30,8 +30,7 @@ public class Skill {
     @NotBlank
     @Column(name = "category_name")
     private String categoryName;
-
-
+    
     @Enumerated(EnumType.STRING)
     private Seniority seniority;
 

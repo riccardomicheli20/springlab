@@ -1,11 +1,6 @@
 package com.proconsul.skill.inventory.entity;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.ManyToOne;
+import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 
 @Entity
@@ -21,7 +16,10 @@ public class Technology {
 
 	@ManyToOne(optional=false)
 	private Category category;
-
+	
+	@OneToOne(mappedBy="technology")
+	private Skill skill;
+	
 	public Category getCategory() {
 		return category;
 	}

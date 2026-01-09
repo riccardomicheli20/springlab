@@ -24,9 +24,6 @@ public class Category {
 
 	@OneToMany(mappedBy = "category")
 	private List<Technology> technologies;
-	
-	@OneToOne(mappedBy="technology")
-	private Skill skill;
 
 	public Long getId() {
 		return id;
