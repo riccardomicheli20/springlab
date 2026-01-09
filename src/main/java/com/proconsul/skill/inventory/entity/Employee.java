@@ -31,7 +31,7 @@ public class Employee {
 	@NotBlank
 	private String email;
 
-	@NotBlank
+
 	@Column(name = "birth_date")
 	private Date birthDate;
 
