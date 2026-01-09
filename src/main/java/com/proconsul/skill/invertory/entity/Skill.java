@@ -1,11 +1,21 @@
 package com.proconsul.skill.invertory.entity;
 
+import java.util.List;
+
 import com.proconsul.skill.invertory.enumerator.Level;
 import com.proconsul.skill.invertory.enumerator.Seniority;
-import jakarta.persistence.*;
-import jakarta.validation.constraints.NotBlank;
 
-import java.util.List;
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
+import jakarta.persistence.FetchType;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.ManyToMany;
+import jakarta.persistence.OneToOne;
+import jakarta.validation.constraints.NotBlank;
 
 @Entity
 public class Skill {
@@ -14,8 +24,7 @@ public class Skill {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(nullable = false)
-    @OneToOne
+    @OneToOne(optional=false)
     private Technology technology;
 
     @NotBlank
