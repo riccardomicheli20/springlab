@@ -1,4 +1,4 @@
-package com.proconsul.skill.invertory.skill.inventory;
+package com.proconsul.skill.inventory.skill.inventory;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;

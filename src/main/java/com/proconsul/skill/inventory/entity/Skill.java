@@ -1,9 +1,9 @@
-package com.proconsul.skill.invertory.entity;
+package com.proconsul.skill.inventory.entity;
 
 import java.util.List;
 
-import com.proconsul.skill.invertory.enumerator.Level;
-import com.proconsul.skill.invertory.enumerator.Seniority;
+import com.proconsul.skill.inventory.enumerator.Level;
+import com.proconsul.skill.inventory.enumerator.Seniority;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;

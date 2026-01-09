@@ -1,6 +1,6 @@
-package com.proconsul.skill.invertory.entity;
+package com.proconsul.skill.inventory.entity;
 
-import com.proconsul.skill.invertory.enumerator.Role;
+import com.proconsul.skill.inventory.enumerator.Role;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;

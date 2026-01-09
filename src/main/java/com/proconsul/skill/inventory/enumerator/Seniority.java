@@ -1,4 +1,4 @@
-package com.proconsul.skill.invertory.enumerator;
+package com.proconsul.skill.inventory.enumerator;
 
 public enum Seniority {
     NONE,

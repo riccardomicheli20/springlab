@@ -1,4 +1,4 @@
-package com.proconsul.skill.invertory.entity;
+package com.proconsul.skill.inventory.entity;
 
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Email;

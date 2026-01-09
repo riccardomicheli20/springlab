@@ -1,4 +1,4 @@
-package com.proconsul.skill.invertory.entity;
+package com.proconsul.skill.inventory.entity;
 
 import java.util.List;
 
