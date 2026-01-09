@@ -30,8 +30,7 @@ public class Employee {
 	@Email
 	@NotBlank
 	private String email;
-
-	@NotBlank
+	
 	@Column(name = "birth_date")
 	private Date birthDate;
 
