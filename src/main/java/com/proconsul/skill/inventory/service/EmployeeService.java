@@ -1,6 +1,9 @@
 package com.proconsul.skill.inventory.service;
 
+import com.proconsul.skill.inventory.dto.EmployeePatchDto;
 import com.proconsul.skill.inventory.dto.EmployeeUpdateDto;
+import com.proconsul.skill.inventory.entity.Employee;
+import com.proconsul.skill.inventory.exception.ResourceNotFoundException;
 
 public interface EmployeeService {
 
@@ -20,8 +23,10 @@ public interface EmployeeService {
      * @throws ResourceNotFoundException se il dipendente non esiste
      */
     EmployeeUpdateDto updateEmployee(EmployeeUpdateDto employeePUpdateDto);
+	
+	public EmployeePatchDto patchEmployee(String fiscalCode, EmployeePatchDto employeePatchDto);	
 
-
+    public Employee saveEmployee(Employee employee);
 
 }
 
