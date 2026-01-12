@@ -13,7 +13,7 @@ public interface EmployeeService {
 	
 	EmployeePatchDto patchEmployee(String fiscalCode, EmployeePatchDto employeePatchDto);
 
-    Employee saveEmployee(Employee employee);
+	EmployeeResponseDto saveEmployee(Employee employee);
 	
 	List<SkillResponseDto> findAllSkills();
 	

@@ -62,7 +62,7 @@ public class Employee {
 	@NotBlank
 	private String phoneNumber;
 
-	@ManyToMany(fetch = FetchType.EAGER)
+	@ManyToMany
 	@JoinTable(name = "employee_skill", joinColumns = @JoinColumn(name = "employee_fiscal_code"), inverseJoinColumns = @JoinColumn(name = "skill_id"))
 
 	private List<Skill> skills;

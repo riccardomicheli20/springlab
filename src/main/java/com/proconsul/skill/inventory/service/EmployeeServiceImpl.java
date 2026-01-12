@@ -64,9 +64,10 @@ public class EmployeeServiceImpl implements EmployeeService {
 	}
 	
 	@Override
-	public Employee saveEmployee(Employee employee) {
+	public EmployeeResponseDto saveEmployee(Employee employee) {
 		
 		Employee savedEmployee = null;
+
 		
 		if (employeeRepository.existsByFiscalCode(employee.getFiscalCode())) {
 			throw new EmployeeAlreadyExistException("Employee with fiscal code: " + employee.getFiscalCode() + " " + " already exist");
@@ -75,6 +76,7 @@ public class EmployeeServiceImpl implements EmployeeService {
 			try {
 				
 				savedEmployee = employeeRepository.save(employee);
+
 				
 			} catch (IllegalArgumentException | OptimisticLockingFailureException ex) {
 				
@@ -82,7 +84,7 @@ public class EmployeeServiceImpl implements EmployeeService {
 			}
 		}
 		
-		return savedEmployee;
+		return employeeMapper.toEmployeeResponseDto(savedEmployee);
 	}
 	
 	@Override
