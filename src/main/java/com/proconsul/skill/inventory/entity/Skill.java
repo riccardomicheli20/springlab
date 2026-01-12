@@ -37,10 +37,10 @@ public class Skill {
     @Enumerated(EnumType.STRING)
     private Level level;
 
-    @ManyToMany(mappedBy = "skills", fetch = FetchType.EAGER)
+    @ManyToMany(mappedBy = "skills")
     private List<Employee> employees;
-
-
+    
+    
     public Long getId() {
         return id;
     }
