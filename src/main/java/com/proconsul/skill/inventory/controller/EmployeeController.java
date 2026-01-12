@@ -28,14 +28,13 @@ public class EmployeeController {
 	}
 	
 	@PutMapping
-	public ResponseEntity<EmployeeUpdateDto> updateEmployee(@RequestBody @Valid EmployeeUpdateDto dto) {
-		return ResponseEntity.ok(employeeService.updateEmployee(dto));
+	public EmployeeResponseDto updateEmployee(@RequestBody @Valid EmployeeUpdateDto dto) {
+		return employeeService.updateEmployee(dto);
 	}
 	
 	@PatchMapping("/fiscalCode/{fiscalCode}")
-	public ResponseEntity<EmployeePatchDto> partialUpdateEmployee(@PathVariable String fiscalCode, @RequestBody EmployeePatchDto employeePatchDto) {
-		EmployeePatchDto updatedDto = employeeService.patchEmployee(fiscalCode, employeePatchDto);
-		return ResponseEntity.ok(updatedDto);
+	public EmployeeResponseDto partialUpdateEmployee(@PathVariable String fiscalCode, @RequestBody EmployeePatchDto employeePatchDto) {
+		return employeeService.patchEmployee(fiscalCode, employeePatchDto);
 	}
 	
 	@PostMapping

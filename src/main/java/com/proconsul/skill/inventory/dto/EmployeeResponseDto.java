@@ -95,4 +95,18 @@ public class EmployeeResponseDto {
 		this.phoneNumber = phoneNumber;
 	}
 	
+	public EmployeeResponseDto(String birthPlace, Date birthDate, String email, String lastName, String firstName, String fiscalCode, String phoneNumber, String postalCode, String city, String address) {
+		this.birthPlace = birthPlace;
+		this.birthDate = birthDate;
+		this.email = email;
+		this.lastName = lastName;
+		this.firstName = firstName;
+		this.fiscalCode = fiscalCode;
+		this.phoneNumber = phoneNumber;
+		this.postalCode = postalCode;
+		this.city = city;
+		this.address = address;
+	}
+	
+	public EmployeeResponseDto() {}
 }

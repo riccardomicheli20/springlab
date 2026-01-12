@@ -9,9 +9,9 @@ import java.util.List;
 
 public interface EmployeeService {
 	
-    EmployeeUpdateDto updateEmployee(EmployeeUpdateDto employeePUpdateDto);
+	EmployeeResponseDto updateEmployee(EmployeeUpdateDto employeePUpdateDto);
 	
-	EmployeePatchDto patchEmployee(String fiscalCode, EmployeePatchDto employeePatchDto);
+	EmployeeResponseDto patchEmployee(String fiscalCode, EmployeePatchDto employeePatchDto);
 
 	EmployeeResponseDto saveEmployee(Employee employee);
 	

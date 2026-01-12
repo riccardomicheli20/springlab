@@ -43,7 +43,9 @@ public class EmployeeServiceImpl implements EmployeeService {
 	}
 	
 	@Override
-	public EmployeeUpdateDto updateEmployee(EmployeeUpdateDto employeeUpdateDto) {
+	public EmployeeResponseDto updateEmployee(EmployeeUpdateDto employeeUpdateDto) {
+		
+		EmployeeResponseDto employeeResponseDto = new EmployeeResponseDto();
 		
 		log.info("Avvio aggiornamento dipendente con codice fiscale = {}", employeeUpdateDto.getFiscalCode());
 		
@@ -58,9 +60,9 @@ public class EmployeeServiceImpl implements EmployeeService {
 		
 		log.info("Aggiornamento completato con successo per fiscalCode={}", saveEmployee.getFiscalCode());
 		
-		employeeMapper.toEntity(saveEmployee, employeeUpdateDto);
+		employeeResponseDto = employeeMapper.toEmployeeResponseDto(saveEmployee);
 		
-		return employeeUpdateDto;
+		return employeeResponseDto;
 	}
 	
 	@Override
@@ -88,7 +90,9 @@ public class EmployeeServiceImpl implements EmployeeService {
 	}
 	
 	@Override
-	public EmployeePatchDto patchEmployee(String fiscalCode, EmployeePatchDto dto) {
+	public EmployeeResponseDto patchEmployee(String fiscalCode, EmployeePatchDto dto) {
+		
+		EmployeeResponseDto employeeResponseDto = new EmployeeResponseDto();
 		
 		EmployeePatchDto dtoPatch = new EmployeePatchDto();
 		
@@ -101,13 +105,15 @@ public class EmployeeServiceImpl implements EmployeeService {
 			
 			employeeMapper.patchEmployeeDtoFromEntity(employee, dtoPatch);
 			employeeRepository.save(employee);
+			employeeResponseDto = employeeMapper.patchToResponseDto(dtoPatch);
+			employeeResponseDto.setFiscalCode(fiscalCode);
 			
 		} catch (IllegalArgumentException | OptimisticLockingFailureException ex) {
 			
 			ex.getMessage();
 		}
 		
-		return dtoPatch;
+		return employeeResponseDto;
 		
 	}
 	
