@@ -16,7 +16,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
-import java.util.Map;
 
 @RestController
 @RequestMapping("/rest/api/employees")
@@ -56,11 +55,6 @@ public class EmployeeController {
 	@GetMapping("/fiscalcode/{fiscalCode}")
 	public EmployeeResponseDto findEmployeeByFiscalCode(@PathVariable ("fiscalCode") String fiscalCode) throws ResourceNotFoundException {
 		return employeeService.findByFiscalCode(fiscalCode);
-	}
-	
-	@DeleteMapping("/fiscalcode/{fiscalCode}")
-	public Map<String, Boolean> deleteEmployee(@PathVariable String fiscalCode) throws ResourceNotFoundException {
-		return employeeService.deleteEmployeeByFiscalCode(fiscalCode);
 	}
 	
 }

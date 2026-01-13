@@ -22,6 +22,5 @@ public interface EmployeeService {
 	
 	EmployeeResponseDto findByFiscalCode(String fiscalCode);
 	
-	Map<String, Boolean> deleteEmployeeByFiscalCode(String fiscalCode) throws ResourceNotFoundException;
 }
 
