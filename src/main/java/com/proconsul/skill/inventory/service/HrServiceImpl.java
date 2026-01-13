@@ -9,7 +9,9 @@ import com.proconsul.skill.inventory.dto.SaveCategoryRequest;
 import com.proconsul.skill.inventory.dto.SaveCategoryResponse;
 import com.proconsul.skill.inventory.entity.Category;
 import com.proconsul.skill.inventory.exception.CategoryAlreadyExistException;
+import com.proconsul.skill.inventory.exception.HrAlreadyExistException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.dao.OptimisticLockingFailureException;
 import org.springframework.stereotype.Service;
 
@@ -142,7 +144,7 @@ public class HrServiceImpl implements HrService{
 
     }
 	@Override
-	public HrResponseDto login(HrLoginRequestDto request) {
+	public HrResponseDto login(HrRequestDto.HrLoginRequestDto request) {
 		Hr hr = hrRepository
 				.findByEmailAndPassword(request.getEmail(), request.getPassword())
 				.orElseThrow(() -> new RuntimeException("Credenziali non valide"));
@@ -155,5 +157,25 @@ public class HrServiceImpl implements HrService{
 				hr.getRole()
 		);
 	}
-
+	
+	@Override
+	public HrResponseDto saveHr(Hr hr) {
+		
+		if (hrRepository.existsById(hr.getEmail())) {
+			throw new HrAlreadyExistException("Hr with email " + hr.getEmail() + " already exists");
+		}
+		
+		Hr savedHr = null;
+		
+		try {
+			savedHr = hrRepository.save(hr);
+		} catch (DataIntegrityViolationException ex) {
+			
+			ex.getMessage();
+		}
+		
+		return hrMapper.toHrResponseDto(savedHr);
+		
+	}
+	
 }

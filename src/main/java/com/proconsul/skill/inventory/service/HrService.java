@@ -1,6 +1,7 @@
 package com.proconsul.skill.inventory.service;
 
 import com.proconsul.skill.inventory.dto.*;
+import com.proconsul.skill.inventory.entity.Hr;
 import com.proconsul.skill.inventory.exception.ResourceNotFoundException;
 
 import java.util.Map;
@@ -18,5 +19,7 @@ public interface HrService {
 
     SaveCategoryResponse saveCategory(SaveCategoryRequest saveCategoryRequest);
 
-    HrResponseDto login(HrLoginRequestDto request);
+    HrResponseDto login(HrRequestDto.HrLoginRequestDto request);
+    
+    HrResponseDto saveHr(Hr hr);
 }
