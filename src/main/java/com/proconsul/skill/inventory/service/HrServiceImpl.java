@@ -1,5 +1,8 @@
 package com.proconsul.skill.inventory.service;
 
+import com.proconsul.skill.inventory.dto.*;
+import com.proconsul.skill.inventory.entity.Employee;
+import com.proconsul.skill.inventory.entity.Hr;
 import java.util.List;
 
 import com.proconsul.skill.inventory.dto.SaveCategoryRequest;
@@ -17,36 +20,44 @@ import com.proconsul.skill.inventory.entity.Hr;
 import com.proconsul.skill.inventory.exception.EntityNotFoundException;
 import com.proconsul.skill.inventory.exception.ResourceNotFoundException;
 import com.proconsul.skill.inventory.mapper.CategoryMapper;
+import com.proconsul.skill.inventory.mapper.HrMapper;
 import com.proconsul.skill.inventory.repository.CategoryRepository;
 import com.proconsul.skill.inventory.repository.EmployeeRepository;
 import com.proconsul.skill.inventory.repository.HrRepository;
-
+import org.springframework.dao.OptimisticLockingFailureException;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.stereotype.Service;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 @Service
 public class HrServiceImpl implements HrService {
 
+    @Value("${entity.not.found}")
+    private String entityNotFound;
+
+
+
     @Autowired
     private CategoryRepository prova;
 
-    @Value("${entity.not.found}")
-    private String entityNotFound;
 
     private CategoryMapper categoryMapper;
     private CategoryRepository categoryRepository;
 	private HrRepository hrRepository;
 	private EmployeeRepository employeeRepository;
- 
-	public HrServiceImpl(CategoryMapper categoryMapper, CategoryRepository categoryRepository, EmployeeRepository employeeRepository,HrRepository hrRepository ) {
-	this.categoryMapper = categoryMapper;
-	this.categoryRepository = categoryRepository;
-	this.employeeRepository = employeeRepository;
-	this.hrRepository = hrRepository;
-}
+    private final HrMapper hrMapper;
+    
+    public HrServiceImpl(CategoryMapper categoryMapper, CategoryRepository categoryRepository, EmployeeRepository employeeRepository, HrRepository hrRepository, HrMapper hrMapper) {
+        this.categoryMapper = categoryMapper;
+        this.categoryRepository = categoryRepository;
+        this.employeeRepository = employeeRepository;
+        this.hrRepository = hrRepository;
+        this.hrMapper = hrMapper;
+    }
 
 
 	@Override
@@ -54,27 +65,7 @@ public class HrServiceImpl implements HrService {
 	    return categoryMapper.toListCategoryResponseDto(categoryRepository.findAll());
 	}
 	
-
-
-	@Override
-	public HrResponseDto login(HrLoginRequestDto request) {
-		Hr hr = hrRepository
-				.findByEmailAndPassword(request.getEmail(), request.getPassword())
-				.orElseThrow(() -> new RuntimeException("Credenziali non valide"));
-
-		return new HrResponseDto(
-				hr.getFirstName(),
-				hr.getLastName(),
-				hr.getEmail(),
-				hr.getPassword(),
-				hr.getRole()
-		);
-	}
-
-  
-
-    protected HrServiceImpl() {
-    }
+	
 
     @Transactional
     @Override
@@ -93,7 +84,6 @@ public class HrServiceImpl implements HrService {
         return response;
 
     }
-
 
     @Override
     public SaveCategoryResponse saveCategory(SaveCategoryRequest saveCategoryRequest) {
@@ -116,5 +106,58 @@ public class HrServiceImpl implements HrService {
         return response;
 
     }
+
+    @Override
+    public HrResponseUpdateDto updateHr(HrUpdateDto dto) {
+
+        Hr existingHr = hrRepository.findById(dto.getEmail()).orElseThrow(() -> new ResourceNotFoundException("Nessun HR trovato con email: " + dto.getEmail()));
+
+        hrMapper.toDto(dto, existingHr);
+
+        Hr updatedHr = hrRepository.save(existingHr);
+
+        return hrMapper.toHrResponseDto(updatedHr);
+    }
+
+    @Override
+    public HrResponseUpdateDto patchHr(String email, HrPatchDto dto) {
+
+        HrResponseUpdateDto hrResponseUpdateDto = new HrResponseUpdateDto();
+
+        HrPatchDto dtoPatch = new HrPatchDto();
+
+        Hr hr = hrRepository.findById(email).orElseThrow(
+                () -> new ResourceNotFoundException("Nessun HR trovato con email:" + email));
+
+        hrMapper.patchHrFromDto(dto, hr);
+
+        try {
+
+            hrMapper.patchHrDtoFromEntity(hr, dtoPatch);
+            hrRepository.save(hr);
+            hrResponseUpdateDto = hrMapper.patchToResponseDto(dtoPatch);
+
+        } catch (IllegalArgumentException | OptimisticLockingFailureException ex) {
+
+            ex.getMessage();
+        }
+
+        return hrResponseUpdateDto;
+
+    }
+	@Override
+	public HrResponseDto login(HrLoginRequestDto request) {
+		Hr hr = hrRepository
+				.findByEmailAndPassword(request.getEmail(), request.getPassword())
+				.orElseThrow(() -> new RuntimeException("Credenziali non valide"));
+
+		return new HrResponseDto(
+				hr.getFirstName(),
+				hr.getLastName(),
+				hr.getEmail(),
+				hr.getPassword(),
+				hr.getRole()
+		);
+	}
 
 }

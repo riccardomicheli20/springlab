@@ -3,7 +3,11 @@ package com.proconsul.skill.inventory.controller;
 
 import java.util.List;
 
-import org.springframework.web.bind.annotation.GetMapping;
+import com.proconsul.skill.inventory.dto.HrPatchDto;
+import com.proconsul.skill.inventory.dto.HrResponseUpdateDto;
+import com.proconsul.skill.inventory.dto.HrUpdateDto;
+import jakarta.validation.Valid;
+import org.springframework.web.bind.annotation.*;
 import com.proconsul.skill.inventory.exception.ResourceNotFoundException;
 import com.proconsul.skill.inventory.service.HrService;
 
@@ -29,9 +33,9 @@ import java.util.Map;
 @RestController
 @RequestMapping("/rest/api/hrs")
 public class HrController {
-
+	
 	private final HrService hrService;
-
+	
 	public HrController(HrService hrService) {
 		this.hrService = hrService;
 	}
@@ -53,5 +57,18 @@ public class HrController {
 		return hrService.saveCategory(request);
 	}
 
+    @PutMapping
+    public HrResponseUpdateDto updateHr(@RequestBody @Valid HrUpdateDto hrUpdateDto){
+        return hrService.updateHr(hrUpdateDto);
+    }
+
+    @PatchMapping("/email/{email}")
+    public HrResponseUpdateDto patchHr(@PathVariable String email, @RequestBody HrPatchDto hrPatchDto) {
+        return hrService.patchHr(email,hrPatchDto);
+    }
+	@PostMapping("/login")
+	public HrResponseDto loginHr(@RequestBody @Valid HrLoginRequestDto request) {
+		return hrService.login(request);
+	}
 
 }
