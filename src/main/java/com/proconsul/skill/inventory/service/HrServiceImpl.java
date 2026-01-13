@@ -97,7 +97,7 @@ public class HrServiceImpl implements HrService {
             Category savedCategory = new Category(saveCategoryRequest.getCategoryName(), null);
             prova.save(savedCategory);
             response.setSaved(true);
-        } catch (IllegalArgumentException | OptimisticLockingFailureException e) {
+        } catch (IllegalArgumentException | OptimisticLockingFailureException | CategoryAlreadyExistException e) {
 
             e.getMessage();
         }

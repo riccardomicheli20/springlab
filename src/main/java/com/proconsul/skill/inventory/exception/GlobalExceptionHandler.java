@@ -62,7 +62,8 @@ public class GlobalExceptionHandler {
 
 	@ResponseStatus(HttpStatus.BAD_REQUEST)
 	@ExceptionHandler(CategoryAlreadyExistException.class)
-	public ErrorMessage handleCategoryAlreadyExistException(EmployeeAlreadyExistException ex, HttpServletRequest request) {
+	public ErrorMessage handleCategoryAlreadyExistException(CategoryAlreadyExistException ex, HttpServletRequest request) {
+		System.out.println("sono entrato!!");
 		return new ErrorMessage(LocalDateTime.now(), HttpStatus.BAD_REQUEST.value(), "Category with that name already exist");
 	}
 
