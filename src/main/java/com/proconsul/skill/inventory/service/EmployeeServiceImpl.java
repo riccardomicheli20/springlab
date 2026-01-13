@@ -148,23 +148,5 @@ public class EmployeeServiceImpl implements EmployeeService {
 		return employeeMapper.toEmployeeResponseDto(employee);
 	}
 	
-	@Transactional
-	@Override
-	public Map<String, Boolean> deleteEmployeeByFiscalCode(String fiscalCode) throws ResourceNotFoundException {
-		
-		if (!employeeRepository.existsByFiscalCode(fiscalCode)) {
-			
-			throw new EntityNotFoundException(entityNotFound + " with fiscal code " + fiscalCode + " not found");
-		}
-		
-		employeeRepository.deleteEmployeeByFiscalCode(fiscalCode);
-		
-		Map<String, Boolean> response = new HashMap<>();
-		response.put("deleted", true);
-		
-		return response;
-		
-	}
-	
 }
 
