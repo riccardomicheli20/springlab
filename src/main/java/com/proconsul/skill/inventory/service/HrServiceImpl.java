@@ -3,6 +3,17 @@ package com.proconsul.skill.inventory.service;
 import com.proconsul.skill.inventory.dto.*;
 import com.proconsul.skill.inventory.entity.Employee;
 import com.proconsul.skill.inventory.entity.Hr;
+import java.util.List;
+
+import com.proconsul.skill.inventory.dto.SaveCategoryRequest;
+import com.proconsul.skill.inventory.dto.SaveCategoryResponse;
+import com.proconsul.skill.inventory.entity.Category;
+import com.proconsul.skill.inventory.exception.CategoryAlreadyExistException;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.OptimisticLockingFailureException;
+import org.springframework.stereotype.Service;
+
+import com.proconsul.skill.inventory.dto.CategoryResponseDto;
 import com.proconsul.skill.inventory.exception.EntityNotFoundException;
 import com.proconsul.skill.inventory.exception.ResourceNotFoundException;
 import com.proconsul.skill.inventory.mapper.CategoryMapper;
@@ -25,6 +36,14 @@ public class HrServiceImpl implements HrService {
     @Value("${entity.not.found}")
     private String entityNotFound;
 
+public class HrServiceImpl implements HrService {
+
+    @Autowired
+    private CategoryRepository prova;
+
+    @Value("${entity.not.found}")
+    private String entityNotFound;
+
     private CategoryMapper categoryMapper;
     private CategoryRepository categoryRepository;
     private final EmployeeRepository employeeRepository;
@@ -38,6 +57,16 @@ public class HrServiceImpl implements HrService {
         this.hrRepository = hrRepository;
         this.hrMapper = hrMapper;
 
+    }
+    private EmployeeRepository employeeRepository;
+
+    protected HrServiceImpl() {
+    }
+
+    public HrServiceImpl(CategoryMapper categoryMapper, CategoryRepository categoryRepository, EmployeeRepository employeeRepository) {
+        this.categoryMapper = categoryMapper;
+        this.categoryRepository = categoryRepository;
+        this.employeeRepository = employeeRepository;
     }
 
 
@@ -100,6 +129,51 @@ public class HrServiceImpl implements HrService {
         }
 
         return hrResponseUpdateDto;
+
+    }
+    @Override
+    public List<CategoryResponseDto> findAllCategories() {
+        return categoryMapper.toListCategoryResponseDto(categoryRepository.findAll());
+    }
+
+    @Transactional
+    @Override
+    public Map<String, Boolean> deleteEmployeeByFiscalCode(String fiscalCode) throws ResourceNotFoundException {
+
+        if (!employeeRepository.existsByFiscalCode(fiscalCode)) {
+
+            throw new EntityNotFoundException(entityNotFound + " with fiscal code " + fiscalCode + " not found");
+        }
+
+        employeeRepository.deleteEmployeeByFiscalCode(fiscalCode);
+
+        Map<String, Boolean> response = new HashMap<>();
+        response.put("deleted", true);
+
+        return response;
+
+    }
+
+
+    @Override
+    public SaveCategoryResponse saveCategory(SaveCategoryRequest saveCategoryRequest) {
+
+        SaveCategoryResponse response = new SaveCategoryResponse();
+        response.setSaved(false);
+        try {
+
+            Boolean found = prova.existsByName(saveCategoryRequest.getCategoryName());
+            if (found) {
+                throw new CategoryAlreadyExistException("Category with that name already exist");
+            }
+            Category savedCategory = new Category(saveCategoryRequest.getCategoryName(), null);
+            prova.save(savedCategory);
+            response.setSaved(true);
+        } catch (IllegalArgumentException | OptimisticLockingFailureException e) {
+
+            e.getMessage();
+        }
+        return response;
 
     }
 }

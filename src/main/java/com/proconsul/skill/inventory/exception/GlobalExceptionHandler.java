@@ -59,7 +59,13 @@ public class GlobalExceptionHandler {
 	public ErrorMessage handleEmployeeAlreadyExistException(EmployeeAlreadyExistException ex, HttpServletRequest request) {
 		return new ErrorMessage(LocalDateTime.now(), HttpStatus.BAD_REQUEST.value(), "Employee with that fiscal code already exist");
 	}
-	
+
+	@ResponseStatus(HttpStatus.BAD_REQUEST)
+	@ExceptionHandler(CategoryAlreadyExistException.class)
+	public ErrorMessage handleCategoryAlreadyExistException(EmployeeAlreadyExistException ex, HttpServletRequest request) {
+		return new ErrorMessage(LocalDateTime.now(), HttpStatus.BAD_REQUEST.value(), "Category with that name already exist");
+	}
+
 	@ResponseStatus(HttpStatus.BAD_REQUEST)
 	@ExceptionHandler(IllegalArgumentException.class)
 	public ErrorMessage handleIllegalArgumentException(IllegalArgumentException ex, HttpServletRequest request) {
@@ -90,5 +96,5 @@ public class GlobalExceptionHandler {
     public ErrorMessage handleHttpMessageNotReadableException(HttpMessageNotReadableException ex, HttpServletRequest request) {
         return new ErrorMessage(LocalDateTime.now(), HttpStatus.NOT_FOUND.value(), "RUOLO NON ESISTENTE");
     }
-	
+
 }
