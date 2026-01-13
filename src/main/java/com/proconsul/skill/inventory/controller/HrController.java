@@ -12,7 +12,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.proconsul.skill.inventory.dto.CategoryResponseDto;
-import com.proconsul.skill.inventory.service.HrService;
 
 import java.util.Map;
 
@@ -30,13 +29,7 @@ public class HrController {
 	public Map<String, Boolean> deleteEmployee(@PathVariable String fiscalCode) throws ResourceNotFoundException {
 		return hrService.deleteEmployeeByFiscalCode(fiscalCode);
 	}
-
-	private HrService hrService;
-	public HrController(HrService hrService) {
-		
-		this.hrService = hrService;
-	}
-
+	
 	@GetMapping("/categories")
 	public List<CategoryResponseDto> findAllCategories() {
 	    return hrService.findAllCategories();
