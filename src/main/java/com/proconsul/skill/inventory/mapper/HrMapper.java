@@ -2,14 +2,17 @@ package com.proconsul.skill.inventory.mapper;
 
 import java.util.List;
 
+import org.mapstruct.BeanMapping;
 import org.mapstruct.Mapper;
 
 import com.proconsul.skill.inventory.dto.HrResponseDto;
 import com.proconsul.skill.inventory.entity.Hr;
-import com.proconsul.skill.inventory.dto.*;
-import org.mapstruct.BeanMapping;
 import org.mapstruct.MappingTarget;
 import org.mapstruct.NullValuePropertyMappingStrategy;
+
+import com.proconsul.skill.inventory.dto.HrPatchDto;
+import com.proconsul.skill.inventory.dto.HrResponseUpdateDto;
+import com.proconsul.skill.inventory.dto.HrUpdateDto;
 
 @Mapper(componentModel = "spring")
 public interface HrMapper {
@@ -30,5 +33,11 @@ public interface HrMapper {
 
 	@BeanMapping(nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE)
 	HrResponseUpdateDto patchToResponseDto(HrPatchDto hrPatchDto);
+      
+    @BeanMapping(nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE)
+    void updateHrFromDto(HrUpdateDto dto, @MappingTarget Hr entity);
+    
+    @BeanMapping(nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE)
+    HrResponseUpdateDto toHrResponseUpdateDto(Hr entity);
 
 }
