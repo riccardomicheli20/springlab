@@ -2,7 +2,7 @@ package com.proconsul.skill.inventory.controller;
 
 
 import com.proconsul.skill.inventory.exception.ResourceNotFoundException;
-import com.proconsul.skill.inventory.service.EmployeeService;
+import com.proconsul.skill.inventory.service.HrService;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -14,15 +14,15 @@ import java.util.Map;
 @RequestMapping("/rest/api/hrs")
 public class HrController {
 	
-	private final EmployeeService employeeService;
+	private final HrService hrService;
 	
-	public HrController(EmployeeService employeeService) {
-		this.employeeService = employeeService;
+	public HrController(HrService hrService) {
+		this.hrService = hrService;
 	}
 	
 	@DeleteMapping("/fiscalcode/{fiscalCode}")
 	public Map<String, Boolean> deleteEmployee(@PathVariable String fiscalCode) throws ResourceNotFoundException {
-		return employeeService.deleteEmployeeByFiscalCode(fiscalCode);
+		return hrService.deleteEmployeeByFiscalCode(fiscalCode);
 	}
 
 }
