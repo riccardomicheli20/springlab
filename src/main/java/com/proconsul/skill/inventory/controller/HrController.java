@@ -14,8 +14,13 @@ import jakarta.validation.Valid;
 import org.springframework.web.bind.annotation.*;
 import com.proconsul.skill.inventory.exception.ResourceNotFoundException;
 import com.proconsul.skill.inventory.service.HrService;
+
+import jakarta.validation.Valid;
+
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import com.proconsul.skill.inventory.dto.SaveCategoryRequest;
@@ -24,6 +29,8 @@ import jakarta.validation.Valid;
 import org.springframework.web.bind.annotation.*;
 
 import com.proconsul.skill.inventory.dto.CategoryResponseDto;
+import com.proconsul.skill.inventory.dto.HrRequestDto.HrLoginRequestDto;
+import com.proconsul.skill.inventory.dto.HrResponseDto;
 
 import java.util.Map;
 
@@ -53,6 +60,7 @@ public class HrController {
 	}
 	
 
+
 	@PostMapping("/category")
 	public SaveCategoryResponse saveCategory(@RequestBody @Valid SaveCategoryRequest request) {
 
@@ -68,5 +76,9 @@ public class HrController {
     public HrResponseUpdateDto patchHr(@PathVariable String email, @RequestBody HrPatchDto hrPatchDto) {
         return hrService.patchHr(email,hrPatchDto);
     }
+	@PostMapping("/login")
+	public HrResponseDto loginHr(@RequestBody @Valid HrLoginRequestDto request) {
+		return hrService.login(request);
+	}
 
 }

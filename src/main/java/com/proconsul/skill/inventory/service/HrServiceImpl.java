@@ -1,6 +1,7 @@
 package com.proconsul.skill.inventory.service;
 
 import com.proconsul.skill.inventory.dto.*;
+import com.proconsul.skill.inventory.entity.Employee;
 import com.proconsul.skill.inventory.entity.Hr;
 import java.util.List;
 
@@ -13,19 +14,20 @@ import org.springframework.dao.OptimisticLockingFailureException;
 import org.springframework.stereotype.Service;
 
 import com.proconsul.skill.inventory.dto.CategoryResponseDto;
-import com.proconsul.skill.inventory.dto.HrResponseDto;
 import com.proconsul.skill.inventory.exception.EntityNotFoundException;
-import com.proconsul.skill.inventory.exception.HrAlreadyExistException;
 import com.proconsul.skill.inventory.exception.ResourceNotFoundException;
 import com.proconsul.skill.inventory.mapper.CategoryMapper;
 import com.proconsul.skill.inventory.mapper.HrMapper;
 import com.proconsul.skill.inventory.repository.CategoryRepository;
 import com.proconsul.skill.inventory.repository.EmployeeRepository;
 import com.proconsul.skill.inventory.repository.HrRepository;
+import org.springframework.dao.OptimisticLockingFailureException;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.stereotype.Service;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 @Service
@@ -43,11 +45,10 @@ public class HrServiceImpl implements HrService{
 
     private CategoryMapper categoryMapper;
     private CategoryRepository categoryRepository;
-    private final EmployeeRepository employeeRepository;
-    private final HrRepository hrRepository;
+	private HrRepository hrRepository;
+	private EmployeeRepository employeeRepository;
     private final HrMapper hrMapper;
-
-
+    
     public HrServiceImpl(CategoryMapper categoryMapper, CategoryRepository categoryRepository, EmployeeRepository employeeRepository, HrRepository hrRepository, HrMapper hrMapper) {
         this.categoryMapper = categoryMapper;
         this.categoryRepository = categoryRepository;
@@ -57,35 +58,11 @@ public class HrServiceImpl implements HrService{
     }
 
 
-	@Override
-	public List<CategoryResponseDto> findAllCategories() {
-	    return categoryMapper.toListCategoryResponseDto(categoryRepository.findAll());
-	}
-	
-	@Override
-	public HrResponseDto saveHr(Hr hr) {
-		
-		Hr savedHr = null;
-		
-		if (hrRepository.existsById(hr.getEmail())) {
-			
-			throw new HrAlreadyExistException("Hr with email " + hr.getEmail() + " already exists");
-		
-		} else {
-				
-				try {
-					
-					savedHr = hrRepository.save(hr);
-					
-				} catch (IllegalArgumentException | OptimisticLockingFailureException ex) {
-					
-					ex.getMessage();
-				}
-			}
-			
-			return hrMapper.toHrResponseDto(savedHr);
-	}
-	
+    @Override
+    public List<CategoryResponseDto> findAllCategories() {
+        return categoryMapper.toListCategoryResponseDto(categoryRepository.findAll());
+    }
+
     @Transactional
     @Override
     public Map<String, Boolean> deleteEmployeeByFiscalCode(String fiscalCode) throws ResourceNotFoundException {
@@ -164,4 +141,19 @@ public class HrServiceImpl implements HrService{
         return hrResponseUpdateDto;
 
     }
+	@Override
+	public HrResponseDto login(HrLoginRequestDto request) {
+		Hr hr = hrRepository
+				.findByEmailAndPassword(request.getEmail(), request.getPassword())
+				.orElseThrow(() -> new RuntimeException("Credenziali non valide"));
+
+		return new HrResponseDto(
+				hr.getFirstName(),
+				hr.getLastName(),
+				hr.getEmail(),
+				hr.getPassword(),
+				hr.getRole()
+		);
+	}
+
 }
