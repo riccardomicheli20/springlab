@@ -16,7 +16,6 @@ public interface EmployeeMapper {
 	void patchEmployeeDtoFromEntity(Employee entity, @MappingTarget EmployeePatchDto dto);
 	
 	@BeanMapping(nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE)
-	@Mapping(target = "skills", ignore = true)
 	void toDto(EmployeeUpdateDto employeeUpdateDto, @MappingTarget Employee employee);
 	
 	@BeanMapping(nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE)
@@ -24,5 +23,8 @@ public interface EmployeeMapper {
 	
 	@BeanMapping(nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE)
 	EmployeeResponseDto toEmployeeResponseDto(Employee employee);
+	
+	@BeanMapping(nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE)
+	EmployeeResponseDto patchToResponseDto (EmployeePatchDto employeePatchDto);
 	
 }

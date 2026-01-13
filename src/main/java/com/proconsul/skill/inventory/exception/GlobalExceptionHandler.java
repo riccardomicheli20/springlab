@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.dao.OptimisticLockingFailureException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -58,7 +59,13 @@ public class GlobalExceptionHandler {
 	public ErrorMessage handleEmployeeAlreadyExistException(EmployeeAlreadyExistException ex, HttpServletRequest request) {
 		return new ErrorMessage(LocalDateTime.now(), HttpStatus.BAD_REQUEST.value(), "Employee with that fiscal code already exist");
 	}
-	
+
+	@ResponseStatus(HttpStatus.BAD_REQUEST)
+	@ExceptionHandler(CategoryAlreadyExistException.class)
+	public ErrorMessage handleCategoryAlreadyExistException(EmployeeAlreadyExistException ex, HttpServletRequest request) {
+		return new ErrorMessage(LocalDateTime.now(), HttpStatus.BAD_REQUEST.value(), "Category with that name already exist");
+	}
+
 	@ResponseStatus(HttpStatus.BAD_REQUEST)
 	@ExceptionHandler(IllegalArgumentException.class)
 	public ErrorMessage handleIllegalArgumentException(IllegalArgumentException ex, HttpServletRequest request) {
@@ -82,5 +89,12 @@ public class GlobalExceptionHandler {
 	public ErrorMessage handleAccessNotValidException(AccessNotValidException ex, HttpServletRequest request) {
 		return new ErrorMessage(LocalDateTime.now(), HttpStatus.NOT_FOUND.value(), errorMail);
 	}
-	
+
+    //HttpMessageNotReadableException
+    @ResponseStatus(HttpStatus.NOT_FOUND)
+    @ExceptionHandler(HttpMessageNotReadableException.class)
+    public ErrorMessage handleHttpMessageNotReadableException(HttpMessageNotReadableException ex, HttpServletRequest request) {
+        return new ErrorMessage(LocalDateTime.now(), HttpStatus.NOT_FOUND.value(), "RUOLO NON ESISTENTE");
+    }
+
 }

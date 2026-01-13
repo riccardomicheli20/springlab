@@ -12,5 +12,7 @@ public interface EmployeeRepository extends JpaRepository<Employee, String> {
     Boolean existsByFiscalCode (String fiscalCode);
 	
 	Optional<Employee> findEmployeeByEmail(String email);
+	
+	void deleteEmployeeByFiscalCode(String fiscalCode);
 
 }

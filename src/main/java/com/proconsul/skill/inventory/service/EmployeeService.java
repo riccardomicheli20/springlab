@@ -6,12 +6,13 @@ import com.proconsul.skill.inventory.exception.AccessNotValidException;
 import com.proconsul.skill.inventory.exception.ResourceNotFoundException;
 
 import java.util.List;
+import java.util.Map;
 
 public interface EmployeeService {
 	
-    EmployeeUpdateDto updateEmployee(EmployeeUpdateDto employeePUpdateDto);
+	EmployeeResponseDto updateEmployee(EmployeeUpdateDto employeePUpdateDto);
 	
-	EmployeePatchDto patchEmployee(String fiscalCode, EmployeePatchDto employeePatchDto);
+	EmployeeResponseDto patchEmployee(String fiscalCode, EmployeePatchDto employeePatchDto);
 
 	EmployeeResponseDto saveEmployee(Employee employee);
 	
@@ -20,5 +21,6 @@ public interface EmployeeService {
 	LoginEmployeeDto loginEmployee(LoginEmployeeRequest loginEmployeeRequest) throws AccessNotValidException;
 	
 	EmployeeResponseDto findByFiscalCode(String fiscalCode);
+	
 }
 

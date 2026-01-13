@@ -6,6 +6,7 @@ import com.proconsul.skill.inventory.exception.AccessNotValidException;
 import com.proconsul.skill.inventory.mapper.EmployeeMapper;
 import com.proconsul.skill.inventory.mapper.SkillMapper;
 import com.proconsul.skill.inventory.repository.SkillRepository;
+import jakarta.transaction.Transactional;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
@@ -18,7 +19,9 @@ import com.proconsul.skill.inventory.exception.EntityNotFoundException;
 import com.proconsul.skill.inventory.exception.ResourceNotFoundException;
 import com.proconsul.skill.inventory.repository.EmployeeRepository;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @Service
 public class EmployeeServiceImpl implements EmployeeService {
@@ -43,7 +46,9 @@ public class EmployeeServiceImpl implements EmployeeService {
 	}
 	
 	@Override
-	public EmployeeUpdateDto updateEmployee(EmployeeUpdateDto employeeUpdateDto) {
+	public EmployeeResponseDto updateEmployee(EmployeeUpdateDto employeeUpdateDto) {
+		
+		EmployeeResponseDto employeeResponseDto = new EmployeeResponseDto();
 		
 		log.info("Avvio aggiornamento dipendente con codice fiscale = {}", employeeUpdateDto.getFiscalCode());
 		
@@ -58,9 +63,9 @@ public class EmployeeServiceImpl implements EmployeeService {
 		
 		log.info("Aggiornamento completato con successo per fiscalCode={}", saveEmployee.getFiscalCode());
 		
-		employeeMapper.toEntity(saveEmployee, employeeUpdateDto);
+		employeeResponseDto = employeeMapper.toEmployeeResponseDto(saveEmployee);
 		
-		return employeeUpdateDto;
+		return employeeResponseDto;
 	}
 	
 	@Override
@@ -88,7 +93,9 @@ public class EmployeeServiceImpl implements EmployeeService {
 	}
 	
 	@Override
-	public EmployeePatchDto patchEmployee(String fiscalCode, EmployeePatchDto dto) {
+	public EmployeeResponseDto patchEmployee(String fiscalCode, EmployeePatchDto dto) {
+		
+		EmployeeResponseDto employeeResponseDto = new EmployeeResponseDto();
 		
 		EmployeePatchDto dtoPatch = new EmployeePatchDto();
 		
@@ -101,13 +108,15 @@ public class EmployeeServiceImpl implements EmployeeService {
 			
 			employeeMapper.patchEmployeeDtoFromEntity(employee, dtoPatch);
 			employeeRepository.save(employee);
+			employeeResponseDto = employeeMapper.patchToResponseDto(dtoPatch);
+			employeeResponseDto.setFiscalCode(fiscalCode);
 			
 		} catch (IllegalArgumentException | OptimisticLockingFailureException ex) {
 			
 			ex.getMessage();
 		}
 		
-		return dtoPatch;
+		return employeeResponseDto;
 		
 	}
 	
