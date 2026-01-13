@@ -1,7 +1,6 @@
 package com.proconsul.skill.inventory.service;
 
 import com.proconsul.skill.inventory.dto.*;
-import com.proconsul.skill.inventory.entity.Employee;
 import com.proconsul.skill.inventory.entity.Hr;
 import java.util.List;
 
@@ -15,7 +14,6 @@ import org.springframework.stereotype.Service;
 
 import com.proconsul.skill.inventory.dto.CategoryResponseDto;
 import com.proconsul.skill.inventory.dto.HrResponseDto;
-import com.proconsul.skill.inventory.entity.Hr;
 import com.proconsul.skill.inventory.exception.EntityNotFoundException;
 import com.proconsul.skill.inventory.exception.HrAlreadyExistException;
 import com.proconsul.skill.inventory.exception.ResourceNotFoundException;
@@ -24,13 +22,10 @@ import com.proconsul.skill.inventory.mapper.HrMapper;
 import com.proconsul.skill.inventory.repository.CategoryRepository;
 import com.proconsul.skill.inventory.repository.EmployeeRepository;
 import com.proconsul.skill.inventory.repository.HrRepository;
-import org.springframework.dao.OptimisticLockingFailureException;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.stereotype.Service;
 
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 @Service
@@ -140,7 +135,7 @@ public class HrServiceImpl implements HrService{
 
         Hr updatedHr = hrRepository.save(existingHr);
 
-        return hrMapper.toHrResponseDto(updatedHr);
+        return hrMapper.toHrResponseUpdateDto(updatedHr);
     }
 
     @Override

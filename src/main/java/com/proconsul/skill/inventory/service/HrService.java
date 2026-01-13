@@ -13,11 +13,7 @@ public interface HrService {
 	Map<String, Boolean> deleteEmployeeByFiscalCode(String fiscalCode) throws ResourceNotFoundException;
 	public List<CategoryResponseDto> findAllCategories();
 	HrResponseDto saveHr(Hr hr);
-
-    Map<String, Boolean> deleteEmployeeByFiscalCode(String fiscalCode) throws ResourceNotFoundException;
-
-    public List<CategoryResponseDto> findAllCategories();
-
+	
     public HrResponseUpdateDto updateHr(HrUpdateDto hrUpdateDto);
 
     public HrResponseUpdateDto patchHr(String email, HrPatchDto dto);
