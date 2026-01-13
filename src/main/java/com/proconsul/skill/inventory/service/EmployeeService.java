@@ -3,10 +3,10 @@ package com.proconsul.skill.inventory.service;
 import com.proconsul.skill.inventory.dto.*;
 import com.proconsul.skill.inventory.entity.Employee;
 import com.proconsul.skill.inventory.exception.AccessNotValidException;
-import com.proconsul.skill.inventory.exception.ResourceNotFoundException;
+
 
 import java.util.List;
-import java.util.Map;
+
 
 public interface EmployeeService {
 	
@@ -22,5 +22,10 @@ public interface EmployeeService {
 	
 	EmployeeResponseDto findByFiscalCode(String fiscalCode);
 	
+	List<EmployeeResponseDto> findAllEmployees();
+	
 }
+	
+
+
 

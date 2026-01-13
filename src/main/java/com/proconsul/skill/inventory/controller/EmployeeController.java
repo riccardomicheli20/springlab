@@ -57,4 +57,9 @@ public class EmployeeController {
 		return employeeService.findByFiscalCode(fiscalCode);
 	}
 	
+	@GetMapping("/hr/employees")
+    public ResponseEntity<List<EmployeeResponseDto>> findAllEmployees() {
+        return ResponseEntity.ok(employeeService.findAllEmployees());
+}
+	
 }
