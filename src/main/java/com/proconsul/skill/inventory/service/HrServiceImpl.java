@@ -36,13 +36,11 @@ public class HrServiceImpl implements HrService {
     @Value("${entity.not.found}")
     private String entityNotFound;
 
-public class HrServiceImpl implements HrService {
+
 
     @Autowired
     private CategoryRepository prova;
 
-    @Value("${entity.not.found}")
-    private String entityNotFound;
 
     private CategoryMapper categoryMapper;
     private CategoryRepository categoryRepository;
@@ -50,23 +48,13 @@ public class HrServiceImpl implements HrService {
     private final HrRepository hrRepository;
     private final HrMapper hrMapper;
 
+
     public HrServiceImpl(CategoryMapper categoryMapper, CategoryRepository categoryRepository, EmployeeRepository employeeRepository, HrRepository hrRepository, HrMapper hrMapper) {
         this.categoryMapper = categoryMapper;
         this.categoryRepository = categoryRepository;
         this.employeeRepository = employeeRepository;
         this.hrRepository = hrRepository;
         this.hrMapper = hrMapper;
-
-    }
-    private EmployeeRepository employeeRepository;
-
-    protected HrServiceImpl() {
-    }
-
-    public HrServiceImpl(CategoryMapper categoryMapper, CategoryRepository categoryRepository, EmployeeRepository employeeRepository) {
-        this.categoryMapper = categoryMapper;
-        this.categoryRepository = categoryRepository;
-        this.employeeRepository = employeeRepository;
     }
 
 
@@ -89,6 +77,28 @@ public class HrServiceImpl implements HrService {
         Map<String, Boolean> response = new HashMap<>();
         response.put("deleted", true);
 
+        return response;
+
+    }
+
+    @Override
+    public SaveCategoryResponse saveCategory(SaveCategoryRequest saveCategoryRequest) {
+
+        SaveCategoryResponse response = new SaveCategoryResponse();
+        response.setSaved(false);
+        try {
+
+            Boolean found = prova.existsByName(saveCategoryRequest.getCategoryName());
+            if (found) {
+                throw new CategoryAlreadyExistException("Category with that name already exist");
+            }
+            Category savedCategory = new Category(saveCategoryRequest.getCategoryName(), null);
+            prova.save(savedCategory);
+            response.setSaved(true);
+        } catch (IllegalArgumentException | OptimisticLockingFailureException e) {
+
+            e.getMessage();
+        }
         return response;
 
     }
@@ -119,7 +129,7 @@ public class HrServiceImpl implements HrService {
 
         try {
 
-            hrMapper.patchHrDtoFromEntity(hr,dtoPatch);
+            hrMapper.patchHrDtoFromEntity(hr, dtoPatch);
             hrRepository.save(hr);
             hrResponseUpdateDto = hrMapper.patchToResponseDto(dtoPatch);
 
@@ -129,51 +139,6 @@ public class HrServiceImpl implements HrService {
         }
 
         return hrResponseUpdateDto;
-
-    }
-    @Override
-    public List<CategoryResponseDto> findAllCategories() {
-        return categoryMapper.toListCategoryResponseDto(categoryRepository.findAll());
-    }
-
-    @Transactional
-    @Override
-    public Map<String, Boolean> deleteEmployeeByFiscalCode(String fiscalCode) throws ResourceNotFoundException {
-
-        if (!employeeRepository.existsByFiscalCode(fiscalCode)) {
-
-            throw new EntityNotFoundException(entityNotFound + " with fiscal code " + fiscalCode + " not found");
-        }
-
-        employeeRepository.deleteEmployeeByFiscalCode(fiscalCode);
-
-        Map<String, Boolean> response = new HashMap<>();
-        response.put("deleted", true);
-
-        return response;
-
-    }
-
-
-    @Override
-    public SaveCategoryResponse saveCategory(SaveCategoryRequest saveCategoryRequest) {
-
-        SaveCategoryResponse response = new SaveCategoryResponse();
-        response.setSaved(false);
-        try {
-
-            Boolean found = prova.existsByName(saveCategoryRequest.getCategoryName());
-            if (found) {
-                throw new CategoryAlreadyExistException("Category with that name already exist");
-            }
-            Category savedCategory = new Category(saveCategoryRequest.getCategoryName(), null);
-            prova.save(savedCategory);
-            response.setSaved(true);
-        } catch (IllegalArgumentException | OptimisticLockingFailureException e) {
-
-            e.getMessage();
-        }
-        return response;
 
     }
 }

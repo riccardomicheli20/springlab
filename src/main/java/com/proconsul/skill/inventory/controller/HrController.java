@@ -43,6 +43,12 @@ public class HrController {
 		return hrService.findAllCategories();
 	}
 
+	@PostMapping("/category")
+	public SaveCategoryResponse saveCategory(@RequestBody @Valid SaveCategoryRequest request) {
+
+		return hrService.saveCategory(request);
+	}
+
     @PutMapping
     public HrResponseUpdateDto updateHr(@RequestBody @Valid HrUpdateDto hrUpdateDto){
         return hrService.updateHr(hrUpdateDto);
@@ -52,12 +58,5 @@ public class HrController {
     public HrResponseUpdateDto patchHr(@PathVariable String email, @RequestBody HrPatchDto hrPatchDto) {
         return hrService.patchHr(email,hrPatchDto);
     }
-
-
-	@PostMapping("/category")
-	public SaveCategoryResponse saveCategory(@RequestBody @Valid SaveCategoryRequest request) {
-
-		return hrService.saveCategory(request);
-	}
 
 }
