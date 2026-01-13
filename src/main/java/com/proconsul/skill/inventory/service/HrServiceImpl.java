@@ -12,7 +12,6 @@ import com.proconsul.skill.inventory.dto.CategoryResponseDto;
 import com.proconsul.skill.inventory.dto.EmployeeResponseDto;
 import com.proconsul.skill.inventory.dto.HrPatchDto;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.transaction.annotation.Transactional;
 import com.proconsul.skill.inventory.dto.HrRequestDto.HrLoginRequestDto;
 import com.proconsul.skill.inventory.dto.HrResponseDto;
 import com.proconsul.skill.inventory.dto.HrResponseUpdateDto;
@@ -23,7 +22,6 @@ import com.proconsul.skill.inventory.entity.Category;
 import com.proconsul.skill.inventory.entity.Employee;
 import com.proconsul.skill.inventory.entity.Hr;
 import com.proconsul.skill.inventory.exception.CategoryAlreadyExistException;
-import com.proconsul.skill.inventory.exception.EntityNotFoundException;
 import com.proconsul.skill.inventory.exception.ResourceNotFoundException;
 import com.proconsul.skill.inventory.mapper.CategoryMapper;
 import com.proconsul.skill.inventory.mapper.EmployeeMapper;
@@ -107,43 +105,39 @@ public class HrServiceImpl implements HrService {
 		Hr existingHr = hrRepository.findById(dto.getEmail())
 				.orElseThrow(() -> new ResourceNotFoundException("Nessun HR trovato con email: " + dto.getEmail()));
 
-		hrMapper.toDto(dto, existingHr);
+		hrMapper.updateHrFromDto(dto, existingHr);
 
 		Hr updatedHr = hrRepository.save(existingHr);
 
-		return hrMapper.toHrResponseDto(updatedHr);
+		return hrMapper.toHrResponseUpdateDto(updatedHr);
 	}
 
 	@Override
-	public HrResponseUpdateDto patchHr(String email, HrPatchDto dto) {
-
-		HrResponseUpdateDto hrResponseUpdateDto = new HrResponseUpdateDto();
-
-		HrPatchDto dtoPatch = new HrPatchDto();
-
-		Hr hr = hrRepository.findById(email)
-				.orElseThrow(() -> new ResourceNotFoundException("Nessun HR trovato con email:" + email));
-
-		Hr existingHr = hrRepository.findById(dto.getEmail())
-				.orElseThrow(() -> new ResourceNotFoundException("Nessun HR trovato con email: " + dto.getEmail()));
-
-		hrMapper.updateHrFromDto(dto, existingHr);
-
-		hrMapper.patchHrFromDto(dto, hr);
-
-		try {
-
-			hrMapper.patchHrDtoFromEntity(hr, dtoPatch);
-			hrRepository.save(hr);
-			hrResponseUpdateDto = hrMapper.patchToResponseDto(dtoPatch);
-			return hrMapper.toHrResponseUpdateDto(updatedHr);
-		} catch (IllegalArgumentException | OptimisticLockingFailureException ex) {
-
-			ex.getMessage();
-		}
-
-		return hrResponseUpdateDto;
-	}
+    public HrResponseUpdateDto patchHr(String email, HrPatchDto dto) {
+ 
+        HrResponseUpdateDto hrResponseUpdateDto = new HrResponseUpdateDto();
+ 
+        HrPatchDto dtoPatch = new HrPatchDto();
+ 
+        Hr hr = hrRepository.findById(email).orElseThrow(
+                () -> new ResourceNotFoundException("Nessun HR trovato con email:" + email));
+ 
+        hrMapper.patchHrFromDto(dto, hr);
+ 
+        try {
+ 
+            hrMapper.patchHrDtoFromEntity(hr, dtoPatch);
+            hrRepository.save(hr);
+            hrResponseUpdateDto = hrMapper.patchToResponseDto(dtoPatch);
+ 
+        } catch (IllegalArgumentException | OptimisticLockingFailureException ex) {
+ 
+            ex.getMessage();
+        }
+ 
+        return hrResponseUpdateDto;
+ 
+    }
 
 	@Override
 	public HrResponseDto login(HrLoginRequestDto request) {
