@@ -5,6 +5,7 @@ import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 
 public class HrUpdateDto {
 
@@ -17,8 +18,7 @@ public class HrUpdateDto {
     @NotBlank(message = "il campo è obbligatorio")
     private String lastName;
 
-    @NotBlank(message = "il campo è obbligatorio")
-    @Enumerated(EnumType.STRING)
+    @NotNull(message = "il campo è obbligatorio")
     private Role role;
 
     public @Email String getEmail() {
@@ -45,11 +45,11 @@ public class HrUpdateDto {
         this.lastName = lastName;
     }
 
-    public @NotBlank(message = "il campo è obbligatorio") Role getRole() {
+    public @NotNull(message = "il campo è obbligatorio") Role getRole() {
         return role;
     }
 
-    public void setRole(@NotBlank(message = "il campo è obbligatorio") Role role) {
+    public void setRole(@NotNull(message = "il campo è obbligatorio") Role role) {
         this.role = role;
     }
 
@@ -60,6 +60,5 @@ public class HrUpdateDto {
         this.role = role;
     }
 
-    protected HrUpdateDto() {
-    }
+    public HrUpdateDto() {}
 }
