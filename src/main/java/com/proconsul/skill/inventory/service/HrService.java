@@ -1,19 +1,16 @@
 package com.proconsul.skill.inventory.service;
 
-import com.proconsul.skill.inventory.exception.ResourceNotFoundException;
-
-import java.util.Map;
 import java.util.List;
 
 import com.proconsul.skill.inventory.dto.CategoryResponseDto;
-import com.proconsul.skill.inventory.dto.SaveCategoryRequest;
-import com.proconsul.skill.inventory.dto.SaveCategoryResponse;
+import com.proconsul.skill.inventory.dto.EmployeeResponseDto;
+import com.proconsul.skill.inventory.dto.HrResponseDto;
 
 public interface HrService {
+	public List<CategoryResponseDto> findAllCategories();
 
-    Map<String, Boolean> deleteEmployeeByFiscalCode(String fiscalCode) throws ResourceNotFoundException;
+	List<EmployeeResponseDto> findAllEmployees();
 
-    public List<CategoryResponseDto> findAllCategories();
+	List<HrResponseDto> findAllHr();
 
-    SaveCategoryResponse saveCategory(SaveCategoryRequest saveCategoryRequest);
 }

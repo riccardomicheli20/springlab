@@ -6,18 +6,22 @@ import com.proconsul.skill.inventory.exception.AccessNotValidException;
 import com.proconsul.skill.inventory.mapper.EmployeeMapper;
 import com.proconsul.skill.inventory.mapper.SkillMapper;
 import com.proconsul.skill.inventory.repository.SkillRepository;
+import jakarta.transaction.Transactional;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.dao.OptimisticLockingFailureException;
 import org.springframework.stereotype.Service;
+
 import com.proconsul.skill.inventory.entity.Employee;
 import com.proconsul.skill.inventory.exception.EmployeeAlreadyExistException;
 import com.proconsul.skill.inventory.exception.EntityNotFoundException;
 import com.proconsul.skill.inventory.exception.ResourceNotFoundException;
 import com.proconsul.skill.inventory.repository.EmployeeRepository;
-import java.util.List;
 
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 @Service
 public class EmployeeServiceImpl implements EmployeeService {
@@ -144,13 +148,23 @@ public class EmployeeServiceImpl implements EmployeeService {
 		return employeeMapper.toEmployeeResponseDto(employee);
 	}
 
+	
+	@Transactional
 	@Override
-	public List<EmployeeResponseDto> findAllEmployees() {
+	public Map<String, Boolean> deleteEmployeeByFiscalCode(String fiscalCode) throws ResourceNotFoundException {
 		
-		List<Employee> employees = employeeRepository.findAll();
+		if (!employeeRepository.existsByFiscalCode(fiscalCode)) {
+			
+			throw new EntityNotFoundException(entityNotFound + " with fiscal code " + fiscalCode + " not found");
+		}
 		
+		employeeRepository.deleteEmployeeByFiscalCode(fiscalCode);
 		
-		return employeeMapper.toEmployeeResponseDtoList(employees);
+		Map<String, Boolean> response = new HashMap<>();
+		response.put("deleted", true);
+		
+		return response;
+		
 	}
 	
 }
