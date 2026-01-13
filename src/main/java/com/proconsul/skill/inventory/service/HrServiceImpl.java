@@ -1,21 +1,28 @@
 package com.proconsul.skill.inventory.service;
 
-import com.proconsul.skill.inventory.dto.*;
-import com.proconsul.skill.inventory.entity.Employee;
-import com.proconsul.skill.inventory.entity.Hr;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
-import com.proconsul.skill.inventory.dto.SaveCategoryRequest;
-import com.proconsul.skill.inventory.dto.SaveCategoryResponse;
-import com.proconsul.skill.inventory.entity.Category;
-import com.proconsul.skill.inventory.exception.CategoryAlreadyExistException;
 import com.proconsul.skill.inventory.exception.HrAlreadyExistException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.dao.OptimisticLockingFailureException;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.proconsul.skill.inventory.dto.CategoryResponseDto;
+import com.proconsul.skill.inventory.dto.HrPatchDto;
+import com.proconsul.skill.inventory.dto.HrRequestDto.HrLoginRequestDto;
+import com.proconsul.skill.inventory.dto.HrResponseDto;
+import com.proconsul.skill.inventory.dto.HrResponseUpdateDto;
+import com.proconsul.skill.inventory.dto.HrUpdateDto;
+import com.proconsul.skill.inventory.dto.SaveCategoryRequest;
+import com.proconsul.skill.inventory.dto.SaveCategoryResponse;
+import com.proconsul.skill.inventory.entity.Category;
+import com.proconsul.skill.inventory.entity.Hr;
+import com.proconsul.skill.inventory.exception.CategoryAlreadyExistException;
 import com.proconsul.skill.inventory.exception.EntityNotFoundException;
 import com.proconsul.skill.inventory.exception.ResourceNotFoundException;
 import com.proconsul.skill.inventory.mapper.CategoryMapper;
@@ -23,24 +30,17 @@ import com.proconsul.skill.inventory.mapper.HrMapper;
 import com.proconsul.skill.inventory.repository.CategoryRepository;
 import com.proconsul.skill.inventory.repository.EmployeeRepository;
 import com.proconsul.skill.inventory.repository.HrRepository;
-import org.springframework.dao.OptimisticLockingFailureException;
-import org.springframework.transaction.annotation.Transactional;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.stereotype.Service;
-
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
 
 @Service
-public class HrServiceImpl implements HrService{
-	
-	@Value("${entity.not.found}")
-	private String entityNotFound;
+public class HrServiceImpl implements HrService {
+
+
+    @Value("${entity.not.found}")
+    private String entityNotFound;
 	
 	@Value("${not.valid.email}")
 	private String errorMail;
-	
+
     @Autowired
     private CategoryRepository prova;
 
@@ -60,10 +60,12 @@ public class HrServiceImpl implements HrService{
     }
 
 
-    @Override
-    public List<CategoryResponseDto> findAllCategories() {
-        return categoryMapper.toListCategoryResponseDto(categoryRepository.findAll());
-    }
+	@Override
+	public List<CategoryResponseDto> findAllCategories() {
+	    return categoryMapper.toListCategoryResponseDto(categoryRepository.findAll());
+	}
+	
+	
 
     @Transactional
     @Override
@@ -108,14 +110,18 @@ public class HrServiceImpl implements HrService{
     @Override
     public HrResponseUpdateDto updateHr(HrUpdateDto dto) {
 
-        Hr existingHr = hrRepository.findById(dto.getEmail()).orElseThrow(() -> new ResourceNotFoundException("Nessun HR trovato con email: " + dto.getEmail()));
+        Hr existingHr = hrRepository.findById(dto.getEmail())
+            .orElseThrow(() -> new ResourceNotFoundException(
+                "Nessun HR trovato con email: " + dto.getEmail()
+            ));
 
-        hrMapper.toDto(dto, existingHr);
+        hrMapper.updateHrFromDto(dto, existingHr);
 
         Hr updatedHr = hrRepository.save(existingHr);
 
         return hrMapper.toHrResponseUpdateDto(updatedHr);
     }
+
 
     @Override
     public HrResponseUpdateDto patchHr(String email, HrPatchDto dto) {
@@ -144,7 +150,7 @@ public class HrServiceImpl implements HrService{
 
     }
 	@Override
-	public HrResponseDto login(HrRequestDto.HrLoginRequestDto request) {
+	public HrResponseDto login(HrLoginRequestDto request) {
 		Hr hr = hrRepository
 				.findByEmailAndPassword(request.getEmail(), request.getPassword())
 				.orElseThrow(() -> new RuntimeException("Credenziali non valide"));
@@ -157,6 +163,26 @@ public class HrServiceImpl implements HrService{
 				hr.getRole()
 		);
 	}
+	@Override
+	public Map<String, Boolean> deleteHr(String email) {
+		
+		Hr hr = hrRepository.findById(email)
+				.orElseThrow(() -> new ResourceNotFoundException("HR not found with email: " + email));
+		
+		hrRepository.delete(hr);
+		
+		return Map.of("deleted", true);
+	}
+	
+	@Override
+	public HrResponseDto findHrByEmail(String email) {
+		
+		Hr hr = hrRepository.findById(email)
+				.orElseThrow(() -> new ResourceNotFoundException("HR not found with email: " + email));
+		
+		return hrMapper.toHrResponseDto(hr);
+	}
+
 	
 	@Override
 	public HrResponseDto saveHr(Hr hr) {
