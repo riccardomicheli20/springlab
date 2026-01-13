@@ -4,20 +4,29 @@ import java.util.List;
 
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
+
+import com.proconsul.skill.inventory.dto.HrPatchDto;
+import com.proconsul.skill.inventory.dto.HrResponseUpdateDto;
+import com.proconsul.skill.inventory.dto.HrUpdateDto;
+import jakarta.validation.Valid;
+import org.springframework.web.bind.annotation.*;
+
+import com.proconsul.skill.inventory.service.HrService;
+
+import org.springframework.web.bind.annotation.PathVariable;
+
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.proconsul.skill.inventory.dto.CategoryResponseDto;
 import com.proconsul.skill.inventory.dto.EmployeeResponseDto;
 import com.proconsul.skill.inventory.dto.HrResponseDto;
-import com.proconsul.skill.inventory.service.HrService;
 
 @RestController
 @RequestMapping("/rest/api/hrs")
 public class HrController {
 
-	
-	private HrService hrService;
+	private final HrService hrService;
 
 	public HrController(HrService hrService) {
 
@@ -38,4 +47,15 @@ public class HrController {
 	public ResponseEntity<List<HrResponseDto>> findAllHr() {
 		return ResponseEntity.ok(hrService.findAllHr());
 	}
+
+	@PutMapping
+	public HrResponseUpdateDto updateHr(@RequestBody @Valid HrUpdateDto hrUpdateDto) {
+		return hrService.updateHr(hrUpdateDto);
+	}
+
+	@PatchMapping("/email/{email}")
+	public HrResponseUpdateDto patchHr(@PathVariable String email, @RequestBody HrPatchDto hrPatchDto) {
+		return hrService.patchHr(email, hrPatchDto);
+	}
+
 }

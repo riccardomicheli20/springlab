@@ -4,6 +4,7 @@ import com.proconsul.skill.inventory.enumerator.Role;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 
 @Entity
@@ -26,7 +27,7 @@ public class Hr {
 	@Size(min = 8, max = 32 )
 	private String password;
 	
-	@NotBlank
+	@NotNull
 	@Enumerated(EnumType.STRING)
 	private Role role;
 	
@@ -50,11 +51,11 @@ public class Hr {
 		this.email = email;
 	}
 	
-	public @NotBlank Role getRole() {
+	public @NotNull Role getRole() {
 		return role;
 	}
 	
-	public void setRole(@NotBlank Role role) {
+	public void setRole(@NotNull Role role) {
 		this.role = role;
 	}
 	
