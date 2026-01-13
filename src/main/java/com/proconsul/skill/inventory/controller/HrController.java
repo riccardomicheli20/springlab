@@ -3,13 +3,12 @@ package com.proconsul.skill.inventory.controller;
 
 import java.util.List;
 
-import org.springframework.web.bind.annotation.GetMapping;
+import com.proconsul.skill.inventory.dto.HrResponseDto;
+import com.proconsul.skill.inventory.entity.Hr;
+import jakarta.validation.Valid;
+import org.springframework.web.bind.annotation.*;
 import com.proconsul.skill.inventory.exception.ResourceNotFoundException;
 import com.proconsul.skill.inventory.service.HrService;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
 
 import com.proconsul.skill.inventory.dto.CategoryResponseDto;
 
@@ -33,6 +32,11 @@ public class HrController {
 	@GetMapping("/categories")
 	public List<CategoryResponseDto> findAllCategories() {
 	    return hrService.findAllCategories();
+	}
+	
+	@PostMapping
+	public HrResponseDto saveHr (@Valid @RequestBody Hr hr) {
+		return hrService.saveHr(hr);
 	}
 	
 }

@@ -1,7 +1,6 @@
 package com.proconsul.skill.inventory.exception;
 
 import java.time.LocalDateTime;
-import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.dao.OptimisticLockingFailureException;
@@ -81,6 +80,12 @@ public class GlobalExceptionHandler {
 	@ExceptionHandler(AccessNotValidException.class)
 	public ErrorMessage handleAccessNotValidException(AccessNotValidException ex, HttpServletRequest request) {
 		return new ErrorMessage(LocalDateTime.now(), HttpStatus.NOT_FOUND.value(), errorMail);
+	}
+	
+	@ResponseStatus(HttpStatus.BAD_REQUEST)
+	@ExceptionHandler(HrAlreadyExistException.class)
+	public ErrorMessage handleHrAlreadyExistException(HrAlreadyExistException ex, HttpServletRequest request) {
+		return new ErrorMessage(LocalDateTime.now(), HttpStatus.BAD_REQUEST.value(), "Hr with that email already exist");
 	}
 	
 }
