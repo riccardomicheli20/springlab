@@ -1,11 +1,10 @@
 package com.proconsul.skill.inventory.service;
 
-import com.proconsul.skill.inventory.dto.HrResponseDto;
-import com.proconsul.skill.inventory.dto.HrUpdateDto;
+import java.util.List;
+
+import com.proconsul.skill.inventory.dto.CategoryResponseDto;
 
 public interface HrService {
-
-    HrResponseDto updateHr(HrUpdateDto hrUpdateDto);
-
+	public List<CategoryResponseDto> findAllCategories();
 
 }
