@@ -27,7 +27,7 @@ import jakarta.validation.constraints.NotBlank;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("/rest/api/hr")
+@RequestMapping("/rest/api/hrs")
 @Validated
 public class HrController {
 
@@ -48,11 +48,11 @@ public class HrController {
 		return hrService.findAllCategories();
 	}
 
-	@GetMapping("/hr/employees")
+	@GetMapping("/employees")
 	public ResponseEntity<List<EmployeeResponseDto>> findAllEmployees() {
 		return ResponseEntity.ok(hrService.findAllEmployees());
 	}
-	@GetMapping("/hr")
+	@GetMapping
 	public ResponseEntity<List<HrResponseDto>> findAllHr() {
 		return ResponseEntity.ok(hrService.findAllHr());
 	}
