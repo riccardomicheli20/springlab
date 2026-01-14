@@ -21,8 +21,6 @@ public interface EmployeeService {
 	LoginEmployeeDto loginEmployee(LoginEmployeeRequest loginEmployeeRequest) throws AccessNotValidException;
 
 	EmployeeResponseDto findByFiscalCode(String fiscalCode);
-	
 
-	Map<String, Boolean> deleteEmployeeByFiscalCode(String fiscalCode) throws ResourceNotFoundException;
 
 }

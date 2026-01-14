@@ -1,8 +1,6 @@
 package com.proconsul.skill.inventory.exception;
 
 import java.time.LocalDateTime;
-import java.util.stream.Collectors;
-
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.dao.OptimisticLockingFailureException;
 import org.springframework.http.HttpStatus;
@@ -105,5 +103,11 @@ public class GlobalExceptionHandler {
 		return new ErrorMessage(LocalDateTime.now(), HttpStatus.BAD_REQUEST.value(), "Hr with that email already exist");
 	}
 
+
+	@ResponseStatus(HttpStatus.BAD_REQUEST)
+	@ExceptionHandler(TechnologyAlreadyExistException.class)
+	public ErrorMessage handleTechnologyAlreadyExistException(TechnologyAlreadyExistException ex, HttpServletRequest request) {
+		return new ErrorMessage(LocalDateTime.now(), HttpStatus.BAD_REQUEST.value(), "Technology with that name already exist");
+	}
 
 }

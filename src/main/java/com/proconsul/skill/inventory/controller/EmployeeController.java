@@ -60,10 +60,4 @@ public class EmployeeController {
 		return employeeService.findByFiscalCode(fiscalCode);
 	}
 
-
-	@DeleteMapping("/fiscalcode/{fiscalCode}")
-	public Map<String, Boolean> deleteEmployee(@PathVariable String fiscalCode) throws ResourceNotFoundException {
-		return employeeService.deleteEmployeeByFiscalCode(fiscalCode);
-	}
-
 }

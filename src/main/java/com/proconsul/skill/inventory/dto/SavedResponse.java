@@ -1,12 +1,12 @@
 package com.proconsul.skill.inventory.dto;
 
-public class SaveCategoryResponse {
+public class SavedResponse {
     private Boolean saved;
 
-    public SaveCategoryResponse() {
+    public SavedResponse() {
     }
 
-    public SaveCategoryResponse(Boolean saved) {
+    public SavedResponse(Boolean saved) {
         this.saved = saved;
     }
 
