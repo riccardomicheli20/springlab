@@ -1,36 +1,32 @@
 package com.proconsul.skill.inventory.controller;
 
 import java.util.List;
+import java.util.Map;
 
-import org.springframework.http.ResponseEntity;
+import com.proconsul.skill.inventory.entity.Hr;
+import org.springframework.validation.annotation.Validated;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
-
-import com.proconsul.skill.inventory.dto.HrPatchDto;
-import com.proconsul.skill.inventory.dto.HrResponseUpdateDto;
-import com.proconsul.skill.inventory.dto.HrUpdateDto;
-import jakarta.validation.Valid;
-
-import com.proconsul.skill.inventory.service.HrService;
-
+import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
-
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.proconsul.skill.inventory.dto.CategoryResponseDto;
-import com.proconsul.skill.inventory.dto.EmployeeResponseDto;
-import com.proconsul.skill.inventory.dto.HrResponseDto;
-import java.util.Map;
-
-import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.PatchMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-
+import com.proconsul.skill.inventory.dto.HrPatchDto;
 import com.proconsul.skill.inventory.dto.HrRequestDto.HrLoginRequestDto;
+import com.proconsul.skill.inventory.dto.HrResponseDto;
+import com.proconsul.skill.inventory.dto.HrResponseUpdateDto;
+import com.proconsul.skill.inventory.dto.HrUpdateDto;
+import com.proconsul.skill.inventory.dto.SaveCategoryRequest;
+import com.proconsul.skill.inventory.dto.SaveCategoryResponse;
+import com.proconsul.skill.inventory.exception.ResourceNotFoundException;
+import com.proconsul.skill.inventory.service.HrService;
 
+import jakarta.validation.Valid;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 
@@ -44,6 +40,11 @@ public class HrController {
 	public HrController(HrService hrService) {
 
 		this.hrService = hrService;
+	}
+
+	@DeleteMapping("/fiscalcode/{fiscalCode}")
+	public Map<String, Boolean> deleteEmployee(@PathVariable String fiscalCode) throws ResourceNotFoundException {
+		return hrService.deleteEmployeeByFiscalCode(fiscalCode);
 	}
 
 	@GetMapping("/categories")
@@ -84,6 +85,11 @@ public class HrController {
 	@GetMapping("/email/{email}")
 	public HrResponseDto findHrByEmail(@PathVariable @NotBlank @Email String email) {
 		return hrService.findHrByEmail(email);
+	}
+
+	@PostMapping
+	public HrResponseDto saveHr (@Valid @RequestBody Hr hr) {
+		return hrService.saveHr(hr);
 	}
 
 }

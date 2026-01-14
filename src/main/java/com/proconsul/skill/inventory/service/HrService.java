@@ -11,6 +11,7 @@ import com.proconsul.skill.inventory.dto.HrResponseUpdateDto;
 import com.proconsul.skill.inventory.dto.HrUpdateDto;
 import com.proconsul.skill.inventory.dto.SaveCategoryRequest;
 import com.proconsul.skill.inventory.dto.SaveCategoryResponse;
+import com.proconsul.skill.inventory.entity.Hr;
 import com.proconsul.skill.inventory.exception.ResourceNotFoundException;
 
 import com.proconsul.skill.inventory.dto.EmployeeResponseDto;
@@ -37,4 +38,6 @@ public interface HrService {
 	Map<String, Boolean> deleteHr(String email);
 
 	HrResponseDto findHrByEmail(String email);
+    
+    HrResponseDto saveHr(Hr hr);
 }

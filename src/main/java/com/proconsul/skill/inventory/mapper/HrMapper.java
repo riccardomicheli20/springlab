@@ -34,7 +34,7 @@ public interface HrMapper {
     @BeanMapping(nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE)
 	HrResponseDto toHrResponseDto(Hr hr);
     
-      
+    
     @BeanMapping(nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE)
     void updateHrFromDto(HrUpdateDto dto, @MappingTarget Hr entity);
     
