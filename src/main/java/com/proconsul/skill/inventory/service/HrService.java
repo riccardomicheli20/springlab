@@ -1,32 +1,37 @@
 package com.proconsul.skill.inventory.service;
 
-import com.proconsul.skill.inventory.dto.*;
-import com.proconsul.skill.inventory.exception.ResourceNotFoundException;
-
-import java.util.Map;
 import java.util.List;
+import java.util.Map;
 
-import com.proconsul.skill.inventory.dto.CategoryResponseDto;
+import com.proconsul.skill.inventory.dto.*;
 import com.proconsul.skill.inventory.dto.HrRequestDto.HrLoginRequestDto;
-import com.proconsul.skill.inventory.dto.HrResponseDto;
-import com.proconsul.skill.inventory.dto.SaveCategoryRequest;
-import com.proconsul.skill.inventory.dto.SaveCategoryResponse;
-
+import jakarta.validation.Valid;
+import com.proconsul.skill.inventory.entity.Hr;
+import com.proconsul.skill.inventory.exception.ResourceNotFoundException;
 
 public interface HrService {
 
-	
-    Map<String, Boolean> deleteEmployeeByFiscalCode(String fiscalCode) throws ResourceNotFoundException;
+	List<EmployeeResponseDto> findAllEmployees();
 
-    public List<CategoryResponseDto> findAllCategories();
+	List<HrResponseDto> findAllHr();
 
-    public HrResponseUpdateDto updateHr(HrUpdateDto hrUpdateDto);
+	Map<String, Boolean> deleteEmployeeByFiscalCode(String fiscalCode) throws ResourceNotFoundException;
 
-    public HrResponseUpdateDto patchHr(String email, HrPatchDto dto);
+	public List<CategoryResponseDto> findAllCategories();
 
-    SaveCategoryResponse saveCategory(SaveCategoryRequest saveCategoryRequest);
+	public HrResponseUpdateDto updateHr(HrUpdateDto hrUpdateDto);
 
-    HrResponseDto login(HrLoginRequestDto request);
+	public HrResponseUpdateDto patchHr(String email, HrPatchDto dto);
+
+    SavedResponse saveCategory(@Valid SaveCategoryRequest saveCategoryRequest) ;
+
+	HrResponseDto login(HrLoginRequestDto request);
+
+	Map<String, Boolean> deleteHr(String email);
+
+	HrResponseDto findHrByEmail(String email);
+
+    HrResponseDto saveHr(Hr hr);
+
+    SavedResponse saveTechnology(SaveTechnologyDto request) ;
 }
-
-

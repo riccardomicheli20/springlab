@@ -1,8 +1,6 @@
 package com.proconsul.skill.inventory.exception;
 
 import java.time.LocalDateTime;
-import java.util.stream.Collectors;
-
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.dao.OptimisticLockingFailureException;
 import org.springframework.http.HttpStatus;
@@ -62,7 +60,8 @@ public class GlobalExceptionHandler {
 
 	@ResponseStatus(HttpStatus.BAD_REQUEST)
 	@ExceptionHandler(CategoryAlreadyExistException.class)
-	public ErrorMessage handleCategoryAlreadyExistException(EmployeeAlreadyExistException ex, HttpServletRequest request) {
+	public ErrorMessage handleCategoryAlreadyExistException(CategoryAlreadyExistException ex, HttpServletRequest request) {
+		System.out.println("sono entrato!!");
 		return new ErrorMessage(LocalDateTime.now(), HttpStatus.BAD_REQUEST.value(), "Category with that name already exist");
 	}
 
@@ -96,5 +95,19 @@ public class GlobalExceptionHandler {
     public ErrorMessage handleHttpMessageNotReadableException(HttpMessageNotReadableException ex, HttpServletRequest request) {
         return new ErrorMessage(LocalDateTime.now(), HttpStatus.NOT_FOUND.value(), "RUOLO NON ESISTENTE");
     }
+
+
+	@ResponseStatus(HttpStatus.BAD_REQUEST)
+	@ExceptionHandler(HrAlreadyExistException.class)
+	public ErrorMessage handleHrAlreadyExistException(HrAlreadyExistException ex, HttpServletRequest request) {
+		return new ErrorMessage(LocalDateTime.now(), HttpStatus.BAD_REQUEST.value(), "Hr with that email already exist");
+	}
+
+
+	@ResponseStatus(HttpStatus.BAD_REQUEST)
+	@ExceptionHandler(TechnologyAlreadyExistException.class)
+	public ErrorMessage handleTechnologyAlreadyExistException(TechnologyAlreadyExistException ex, HttpServletRequest request) {
+		return new ErrorMessage(LocalDateTime.now(), HttpStatus.BAD_REQUEST.value(), "Technology with that name already exist");
+	}
 
 }

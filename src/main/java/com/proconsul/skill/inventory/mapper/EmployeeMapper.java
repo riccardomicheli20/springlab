@@ -4,6 +4,9 @@ import com.proconsul.skill.inventory.dto.EmployeePatchDto;
 import com.proconsul.skill.inventory.dto.EmployeeResponseDto;
 import com.proconsul.skill.inventory.dto.EmployeeUpdateDto;
 import com.proconsul.skill.inventory.entity.Employee;
+
+import java.util.List;
+
 import org.mapstruct.*;
 
 @Mapper(componentModel = "spring")
@@ -26,5 +29,10 @@ public interface EmployeeMapper {
 	
 	@BeanMapping(nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE)
 	EmployeeResponseDto patchToResponseDto (EmployeePatchDto employeePatchDto);
+	
+	
+	List<EmployeeResponseDto> toEmployeeResponseDtoList(List<Employee> employees);
+	
+
 	
 }

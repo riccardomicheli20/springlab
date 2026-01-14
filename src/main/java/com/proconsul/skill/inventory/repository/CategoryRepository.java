@@ -3,9 +3,14 @@ package com.proconsul.skill.inventory.repository;
 import com.proconsul.skill.inventory.entity.Category;
 import org.springframework.data.jpa.repository.JpaRepository;
 
-public interface CategoryRepository extends JpaRepository<Category, Long> {
+import java.util.Optional;
 
-    Boolean existsByName(String name);
+public interface CategoryRepository extends JpaRepository<Category, Long> {
+	
+	Boolean existsByName(String name);
+	 
+
+    Optional<Category> findCategoryByName(String name);
 
 
 }
