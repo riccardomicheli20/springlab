@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.Map;
 
 import com.proconsul.skill.inventory.exception.HrAlreadyExistException;
+import com.proconsul.skill.inventory.mapper.EmployeeMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.OptimisticLockingFailureException;
 import org.springframework.stereotype.Service;
@@ -29,6 +30,7 @@ import com.proconsul.skill.inventory.mapper.HrMapper;
 import com.proconsul.skill.inventory.repository.CategoryRepository;
 import com.proconsul.skill.inventory.repository.EmployeeRepository;
 import com.proconsul.skill.inventory.repository.HrRepository;
+import org.springframework.dao.DataIntegrityViolationException;
 
 @Service
 public class HrServiceImpl implements HrService {
@@ -44,19 +46,19 @@ public class HrServiceImpl implements HrService {
     @Autowired
     private CategoryRepository prova;
 
-
     private CategoryMapper categoryMapper;
     private CategoryRepository categoryRepository;
 	private HrRepository hrRepository;
 	private EmployeeRepository employeeRepository;
     private final HrMapper hrMapper;
-    
-    public HrServiceImpl(CategoryMapper categoryMapper, CategoryRepository categoryRepository, EmployeeRepository employeeRepository, HrRepository hrRepository, HrMapper hrMapper) {
+    private EmployeeMapper employeeMapper;
+    public HrServiceImpl(CategoryMapper categoryMapper, CategoryRepository categoryRepository, EmployeeRepository employeeRepository, HrRepository hrRepository, HrMapper hrMapper, EmployeeMapper employeeMapper) {
         this.categoryMapper = categoryMapper;
         this.categoryRepository = categoryRepository;
         this.employeeRepository = employeeRepository;
         this.hrRepository = hrRepository;
         this.hrMapper = hrMapper;
+		this.employeeMapper = employeeMapper;
     }
 
 

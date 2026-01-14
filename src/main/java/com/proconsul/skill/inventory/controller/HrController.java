@@ -3,7 +3,9 @@ package com.proconsul.skill.inventory.controller;
 import java.util.List;
 import java.util.Map;
 
+import com.proconsul.skill.inventory.dto.*;
 import com.proconsul.skill.inventory.entity.Hr;
+import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -15,14 +17,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.proconsul.skill.inventory.dto.CategoryResponseDto;
-import com.proconsul.skill.inventory.dto.HrPatchDto;
 import com.proconsul.skill.inventory.dto.HrRequestDto.HrLoginRequestDto;
-import com.proconsul.skill.inventory.dto.HrResponseDto;
-import com.proconsul.skill.inventory.dto.HrResponseUpdateDto;
-import com.proconsul.skill.inventory.dto.HrUpdateDto;
-import com.proconsul.skill.inventory.dto.SaveCategoryRequest;
-import com.proconsul.skill.inventory.dto.SaveCategoryResponse;
 import com.proconsul.skill.inventory.exception.ResourceNotFoundException;
 import com.proconsul.skill.inventory.service.HrService;
 

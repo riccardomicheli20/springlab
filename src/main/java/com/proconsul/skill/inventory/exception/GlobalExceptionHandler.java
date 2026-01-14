@@ -104,4 +104,5 @@ public class GlobalExceptionHandler {
 		return new ErrorMessage(LocalDateTime.now(), HttpStatus.BAD_REQUEST.value(), "Hr with that email already exist");
 	}
 
+
 }
